@@ -17,7 +17,7 @@ const AuthForm = ({ type, formData, onChange }) => {
 
   return (
    <div className="bg-opacity-10 backdrop-blur-lg p-6 rounded-xl shadow-xl w-full max-w-md mx-auto">
-      <h2 className="text-3xl font-bold text-center text-black mb-6">
+      <h2 className="text-3xl font-bold text-center text-white mb-6">
         {type === 'login' ? 'Welcome Back!' : 'Create Your Account'}
       </h2>
 
@@ -65,7 +65,7 @@ const AuthForm = ({ type, formData, onChange }) => {
           value={formData.email}
           onChange={onChange}
           required
-          className="w-full p-3 rounded-md bg-white bg-opacity-20 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
+          className="w-full p-3 rounded-md bg-white bg-opacity-20 text-white placeholder-black focus:outline-none focus:ring-2 focus:ring-yellow-300"
         />
         <input
           type="password"
@@ -74,7 +74,7 @@ const AuthForm = ({ type, formData, onChange }) => {
           value={formData.password}
           onChange={onChange}
           required
-          className="w-full p-3 rounded-md bg-white bg-opacity-20 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
+          className="w-full p-3 rounded-md bg-white bg-opacity-20 text-white placeholder-black focus:outline-none focus:ring-2 focus:ring-yellow-300"
         />
         {type === 'register' && (
           <input

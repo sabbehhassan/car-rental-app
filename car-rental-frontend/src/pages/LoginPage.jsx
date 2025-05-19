@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import AuthForm from '../components/AuthForm';
-import { Link } from 'react-router-dom';
-import hero from '../assets/hero.avif'
+import React, { useState } from "react";
+import AuthForm from "../components/AuthForm";
+import { Link } from "react-router-dom";
+import hero from "../assets/hero.avif";
 
 const LoginPage = () => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [formData, setFormData] = useState({ 
+    email: "",
+     password: ""
+     });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -12,7 +15,7 @@ const LoginPage = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log('Login Data:', formData);
+    console.log("Login Data:", formData);
   };
 
   return (
@@ -30,7 +33,6 @@ const LoginPage = () => {
       {/* Auth Card */}
       <div className="relative z-10 w-full max-w-md px-6">
         <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl shadow-2xl p-8">
-
           <AuthForm
             type="login"
             formData={formData}
@@ -39,8 +41,11 @@ const LoginPage = () => {
           />
 
           <p className="mt-6 text-center text-sm text-gray-200">
-            Don&apos;t have an account?{' '}
-            <Link to="/register" className="text-yellow-400 font-semibold hover:underline">
+            Don&apos;t have an account?{" "}
+            <Link
+              to="/register"
+              className="text-yellow-400 font-semibold hover:underline"
+            >
               Register
             </Link>
           </p>

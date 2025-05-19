@@ -39,7 +39,7 @@ const Navbar = () => {
           <li>
             <Link
               to="/"
-              className="px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 hover:bg-[#dcd16d] rounded-2xl text-white font-semibold shadow-lg transition duration-300"
+              className="px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 hover:bg-[#5d5936] rounded-2xl text-white font-semibold shadow-lg transition duration-300"
             >
               Home
             </Link>
@@ -47,7 +47,7 @@ const Navbar = () => {
           <li>
             <Link
               to="/cars"
-              className="px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 hover:bg-[#dcd16d] rounded-2xl text-white font-semibold shadow-lg transition duration-300"
+              className="px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 hover:bg-[#575332] rounded-2xl text-white font-semibold shadow-lg transition duration-300"
             >
               Cars
             </Link>
@@ -55,7 +55,7 @@ const Navbar = () => {
           <li>
             <Link
               to="/login"
-              className="px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 hover:bg-[#dcd16d] rounded-2xl text-white font-semibold shadow-lg transition duration-300"
+              className="px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 hover:bg-[#5e5a36] rounded-2xl text-white font-semibold shadow-lg transition duration-300"
             >
               Login
             </Link>
@@ -63,7 +63,7 @@ const Navbar = () => {
           <li>
             <Link
               to="/register"
-              className="px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 hover:bg-[#dcd16d] rounded-2xl text-white font-semibold shadow-lg transition duration-300"
+              className="px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 hover:bg-[#5d5934] rounded-2xl text-white font-semibold shadow-lg transition duration-300"
             >
               Register
             </Link>
@@ -73,7 +73,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-black bg-opacity-90 text-white px-6 py-4 space-y-4">
+        <div className="md:hidden  bg-opacity-90 text-white px-6 py-4 space-y-4">
           <Link to="/" className="block" onClick={() => setIsOpen(false)}>
             Home
           </Link>
