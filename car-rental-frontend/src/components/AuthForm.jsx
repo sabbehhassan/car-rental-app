@@ -1,73 +1,103 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser, registerUser } from '../features/auth/authSlice';
 
-const AuthForm = ({ type, formData, onChange, onSubmit }) => {
+const AuthForm = ({ type, formData, onChange }) => {
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.auth);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (type === 'login') {
+      dispatch(loginUser(formData));
+    } else {
+      dispatch(registerUser(formData));
+    }
+  };
+
   return (
-    <form
-      onSubmit={onSubmit}
-      className="w-full max-w-lg p-10 backdrop-blur-md bg-white/10 border border-white/20 rounded-3xl shadow-[0_8px_32px_0_rgba(31,38,135,0.37)]"
-    >
-      <h2 className="text-4xl font-bold text-center text-white mb-8 tracking-wide drop-shadow-md">
-        {type === 'login' ? 'Welcome Back 👋' : 'Create Account'}
+   <div className="bg-opacity-10 backdrop-blur-lg p-6 rounded-xl shadow-xl w-full max-w-md mx-auto">
+      <h2 className="text-3xl font-bold text-center text-black mb-6">
+        {type === 'login' ? 'Welcome Back!' : 'Create Your Account'}
       </h2>
 
-      {type === 'register' && (
-        <>
-          <InputField label="Full Name" name="name" type="text" value={formData.name || ''} onChange={onChange} />
-          <InputField label="Age" name="age" type="number" value={formData.age || ''} onChange={onChange} />
-          <div className="mb-5">
-            <label className="text-white block mb-2 font-semibold">Gender</label>
+      {error && <p className="text-red-400 text-center mb-4">{error}</p>}
+
+      <form onSubmit={handleSubmit} className="space-y-5">
+        {type === 'register' && (
+          <>
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={formData.name}
+              onChange={onChange}
+              required
+              className="w-full p-3 rounded-md bg-white bg-opacity-20 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
+            />
+            <input
+              type="number"
+              name="age"
+              placeholder="Age"
+              value={formData.age}
+              onChange={onChange}
+              required
+              className="w-full p-3 rounded-md bg-white bg-opacity-20 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
+            />
             <select
               name="gender"
-              value={formData.gender || ''}
+              value={formData.gender}
               onChange={onChange}
-              className="w-full p-3 rounded-xl bg-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-yellow-400"
               required
+              className="w-full p-3 rounded-md bg-white bg-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
             >
-              <option value="">Select gender</option>
+              <option value="">Select Gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
-              <option value="other">Other</option>
             </select>
-          </div>
-        </>
-      )}
+          </>
+        )}
 
-      <InputField label="Email" name="email" type="email" value={formData.email} onChange={onChange} />
-      <InputField label="Password" name="password" type="password" value={formData.password} onChange={onChange} />
-
-      {type === 'register' && (
-        <InputField
-          label="Confirm Password"
-          name="confirmPassword"
-          type="password"
-          value={formData.confirmPassword || ''}
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
           onChange={onChange}
+          required
+          className="w-full p-3 rounded-md bg-white bg-opacity-20 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
         />
-      )}
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={onChange}
+          required
+          className="w-full p-3 rounded-md bg-white bg-opacity-20 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
+        />
+        {type === 'register' && (
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            value={formData.confirmPassword}
+            onChange={onChange}
+            required
+            className="w-full p-3 rounded-md bg-white bg-opacity-20 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
+          />
+        )}
 
-      <button
-        type="submit"
-        className="w-full mt-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white py-3 rounded-xl font-semibold shadow-lg hover:opacity-90 transition duration-300"
-      >
-        {type === 'login' ? 'Login' : 'Register'}
-      </button>
-    </form>
+        <button
+          type="submit"
+          className="w-full bg-yellow-400 text-black font-bold py-3 rounded-lg hover:bg-yellow-300 transition duration-300"
+          disabled={loading}
+        >
+          {loading ? 'Please wait...' : type === 'login' ? 'Login' : 'Register'}
+        </button>
+      </form>
+    </div>
   );
 };
-
-const InputField = ({ label, name, type, value, onChange }) => (
-  <div className="mb-5">
-    <label className="text-white block mb-2 font-semibold">{label}</label>
-    <input
-      type={type}
-      name={name}
-      value={value}
-      onChange={onChange}
-      className="w-full p-3 rounded-xl bg-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-      placeholder={`Enter your ${label.toLowerCase()}`}
-      required
-    />
-  </div>
-);
 
 export default AuthForm;
