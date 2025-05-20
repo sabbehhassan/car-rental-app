@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -15,10 +16,41 @@ const RegisterPage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleRegister = (e) => {
-    e.preventDefault();
-    console.log('Register Data:', formData);
-  };
+ const handleRegister = async (e) => {
+  e.preventDefault();
+
+  // Trim spaces and basic validation
+  const { name, email, age, gender, password, confirmPassword } = formData;
+
+  if (!name || !email || !age || !gender || !password || !confirmPassword) {
+    alert("Please fill in all fields.");
+    return;
+  }
+
+  if (password.trim() !== confirmPassword.trim()) {
+    alert("Passwords do not match!");
+    return;
+  }
+
+  try {
+    const res = await axios.post("http://localhost:5000/api/auth/register", {
+      name: name.trim(),
+      email: email.trim(),
+      age: Number(age),
+      gender: gender.toLowerCase(),
+      password: password,
+    });
+
+    alert("Registration successful!");
+    console.log(res.data);
+    // Optionally redirect
+    // window.location.href = "/login";
+  } catch (error) {
+    const message = error.response?.data?.message || "Registration failed";
+    alert(message);
+    console.error(message);
+  }
+};
 
   return (
     <div className="min-h-screen bg-[url('/src/assets/register-bg.jpg')] bg-cover bg-center flex items-center justify-center px-4 py-10">

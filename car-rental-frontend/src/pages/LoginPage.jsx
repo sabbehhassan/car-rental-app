@@ -1,21 +1,31 @@
 import React, { useState } from "react";
 import AuthForm from "../components/AuthForm";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import hero from "../assets/hero.avif";
 
 const LoginPage = () => {
-  const [formData, setFormData] = useState({ 
-    email: "",
-     password: ""
-     });
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Login Data:", formData);
+    try {
+      const { data } = await axios.post("http://localhost:5000/api/users/login", formData);
+
+      // Save user info in localStorage
+      localStorage.setItem("userInfo", JSON.stringify(data));
+
+      // Redirect user to dashboard or home
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Login failed:", error.response?.data?.message || error.message);
+      alert(error.response?.data?.message || "Login failed");
+    }
   };
 
   return (
