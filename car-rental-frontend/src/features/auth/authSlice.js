@@ -1,64 +1,97 @@
-// Redux slice to manage auth state
+// features/auth/authSlice.js
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-// Async thunk for login
-export const loginUser = createAsyncThunk('auth/login', async (credentials, thunkAPI) => {
-  try {
-    const response = await axios.post('http://localhost:5000/api/auth/login', credentials);
-    return response.data;
-  } catch (err) {
-    return thunkAPI.rejectWithValue(err.response.data.message);
+// Register user thunk
+export const registerUser = createAsyncThunk(
+  "auth/registerUser",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/register",
+        userData
+      );
+      // Just return message or data without userInfo
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Registration failed"
+      );
+    }
   }
-});
+);
 
-// Async thunk for register
-export const registerUser = createAsyncThunk('auth/register', async (userData, thunkAPI) => {
-  try {
-    const response = await axios.post('http://localhost:5000/api/auth/register', userData);
-    return response.data;
-  } catch (err) {
-    return thunkAPI.rejectWithValue(err.response.data.message);
+// Login thunk
+export const loginUser = createAsyncThunk(
+  "auth/loginUser",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        userData
+      );
+      console.log("Login response:", response.data);
+
+      // Save only the user object (containing name, email, token) to localStorage
+      localStorage.setItem("userInfo", JSON.stringify(response.data.user));
+
+      // Return user object as payload
+      return response.data.user;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Login failed");
+    }
   }
-});
+);
 
-// Initial state
-const initialState = {
-  user: null,
-  loading: false,
-  error: null,
-};
-
-// Slice
 const authSlice = createSlice({
-  name: 'auth',
-  initialState,
+  name: "auth",
+  initialState: {
+    userInfo: JSON.parse(localStorage.getItem("userInfo")) || null,
+    loading: false,
+    error: null,
+    registerSuccess: false,
+  },
   reducers: {
     logout: (state) => {
-      state.user = null;
+      state.userInfo = null;
+      localStorage.removeItem("userInfo");
+    },
+    resetRegisterSuccess: (state) => {
+      state.registerSuccess = false;
+      state.error = null;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loginUser.pending, registerUser.pending, (state) => {
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.registerSuccess = false;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.registerSuccess = true;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.registerSuccess = false;
+      })
+      .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.user = action.payload;
+        console.log("Login fulfilled payload:", action.payload);
         state.loading = false;
+        state.userInfo = action.payload;
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
-        state.user = action.payload;
-        state.loading = false;
-      })
-      .addCase(loginUser.rejected, registerUser.rejected, (state, action) => {
+      .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, resetRegisterSuccess } = authSlice.actions;
 export default authSlice.reducer;

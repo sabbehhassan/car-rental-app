@@ -33,7 +33,7 @@ const AuthForm = ({ type, formData, onChange }) => {
               value={formData.name}
               onChange={onChange}
               required
-              className="w-full p-3 rounded-md bg-white bg-opacity-20 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
+              className="w-full p-3 rounded-md bg-white bg-opacity-20 text-black  focus:outline-none focus:ring-2 focus:ring-yellow-300"
             />
             <input
               type="number"
@@ -42,14 +42,14 @@ const AuthForm = ({ type, formData, onChange }) => {
               value={formData.age}
               onChange={onChange}
               required
-              className="w-full p-3 rounded-md bg-white bg-opacity-20 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
+              className="w-full p-3 rounded-md bg-white bg-opacity-20 text-black  focus:outline-none focus:ring-2 focus:ring-yellow-300"
             />
             <select
               name="gender"
               value={formData.gender}
               onChange={onChange}
               required
-              className="w-full p-3 rounded-md bg-white bg-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
+              className="w-full p-3 rounded-md bg-white bg-opacity-20 text-black focus:outline-none focus:ring-2 focus:ring-yellow-300"
             >
               <option value="">Select Gender</option>
               <option value="male">Male</option>
@@ -65,7 +65,7 @@ const AuthForm = ({ type, formData, onChange }) => {
           value={formData.email}
           onChange={onChange}
           required
-          className="w-full p-3 rounded-md bg-white bg-opacity-20 text-white placeholder-black focus:outline-none focus:ring-2 focus:ring-yellow-300"
+          className="w-full p-3 rounded-md bg-white bg-opacity-20 text-black focus:outline-none focus:ring-2 focus:ring-yellow-300"
         />
         <input
           type="password"
@@ -74,7 +74,7 @@ const AuthForm = ({ type, formData, onChange }) => {
           value={formData.password}
           onChange={onChange}
           required
-          className="w-full p-3 rounded-md bg-white bg-opacity-20 text-white placeholder-black focus:outline-none focus:ring-2 focus:ring-yellow-300"
+          className="w-full p-3 rounded-md bg-white bg-opacity-20 text-black focus:outline-none focus:ring-2 focus:ring-yellow-300"
         />
         {type === 'register' && (
           <input
@@ -84,7 +84,7 @@ const AuthForm = ({ type, formData, onChange }) => {
             value={formData.confirmPassword}
             onChange={onChange}
             required
-            className="w-full p-3 rounded-md bg-white bg-opacity-20 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
+            className="w-full p-3 rounded-md bg-white bg-opacity-20 text-black focus:outline-none focus:ring-2 focus:ring-yellow-300"
           />
         )}
 

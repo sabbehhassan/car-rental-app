@@ -1,39 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AuthForm from "../components/AuthForm";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import hero from "../assets/hero.avif";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../features/auth/authSlice";
+import Hero from "../assets/hero.avif";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { userInfo, loading, error } = useSelector((state) => state.auth);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    try {
-      const { data } = await axios.post("http://localhost:5000/api/users/login", formData);
-
-      // Save user info in localStorage
-      localStorage.setItem("userInfo", JSON.stringify(data));
-
-      // Redirect user to dashboard or home
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("Login failed:", error.response?.data?.message || error.message);
-      alert(error.response?.data?.message || "Login failed");
-    }
+    dispatch(loginUser(formData));
   };
+
+  // Redirect to dashboard on successful login
+ useEffect(() => {
+  if (userInfo) {
+    navigate("/dashboard");
+  }
+}, [userInfo, navigate]);
 
   return (
     <div className="relative min-h-screen flex items-center justify-center text-black">
       {/* Background Image with Gradient Overlay */}
       <div className="absolute inset-0">
         <img
-          src={hero}
+          src={Hero}
           alt="Luxury Cars"
           className="w-full h-full object-cover opacity-100"
         />
@@ -59,6 +60,10 @@ const LoginPage = () => {
               Register
             </Link>
           </p>
+
+          {error && (
+            <p className="text-red-400 text-center mt-4">{error}</p>
+          )}
         </div>
       </div>
     </div>
