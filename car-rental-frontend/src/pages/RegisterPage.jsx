@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AuthForm from "../components/AuthForm";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { registerUser, resetRegisterSuccess } from "../features/auth/authSlice";
 import hero from "../assets/hero.avif";
@@ -18,7 +18,9 @@ const RegisterPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { registerSuccess, error, loading } = useSelector((state) => state.auth);
+  const { registerSuccess, error, loading } = useSelector(
+    (state) => state.auth
+  );
 
   useEffect(() => {
     if (registerSuccess) {
@@ -58,8 +60,20 @@ const RegisterPage = () => {
             onChange={handleChange}
             onSubmit={handleSubmit}
           />
+
           {error && <p className="text-red-400 mt-2 text-center">{error}</p>}
-          {loading && <p className="text-yellow-400 mt-2 text-center">Loading...</p>}
+          {loading && (
+            <p className="text-yellow-400 mt-2 text-center">Loading...</p>
+          )}
+          <p className="mt-6 text-center text-sm text-gray-200">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-yellow-400 font-semibold hover:underline"
+            >
+              Login
+            </Link>
+          </p>
         </div>
       </div>
     </div>

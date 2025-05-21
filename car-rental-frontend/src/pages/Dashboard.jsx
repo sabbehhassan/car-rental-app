@@ -10,31 +10,42 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/login");  // Logout ke baad login page pe redirect kar do
+    navigate("/login");
+  };
+
+  const goToCars = () => {
+    navigate("/cars");
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <h2 className="text-3xl font-bold mb-4 text-indigo-700">
-          Welcome to your Dashboard
-        </h2>
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white relative">
+      {/* Top Navbar */}
+      <div className="w-full flex justify-between items-center px-6 py-4 backdrop-blur-sm bg-white/10 border-b border-white/20 fixed top-0 left-0 z-50">
+        <h1 className="text-2xl font-bold tracking-wide">Hello, {user?.name}</h1>
+        <button
+          onClick={handleLogout}
+          className="px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-full transition duration-200"
+        >
+          Logout
+        </button>
+      </div>
 
-        {user ? (
-          <div className="bg-white p-6 rounded shadow-md">
-            <p><strong>Name:</strong> {user.name}</p>
-            <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>Role:</strong> {user.role || "User"}</p>
-            <button
-              onClick={handleLogout}
-              className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-            >
-              Logout
-            </button>
-          </div>
-        ) : (
-          <p className="text-red-500">User not logged in.</p>
-        )}
+      {/* Center Content */}
+      <div className="flex items-center justify-center h-screen pt-20">
+        <div className="text-center space-y-6">
+          <h2 className="text-4xl font-semibold tracking-wide text-white/90">
+            🚘 Welcome to CarRent Dashboard
+          </h2>
+          <p className="text-white/60 text-lg">
+            Your one-stop destination for luxury car rentals.
+          </p>
+          <button
+            onClick={goToCars}
+            className="mt-4 px-6 py-3 bg-yellow-400 text-black font-semibold rounded-full hover:bg-yellow-300 transition"
+          >
+            Start Booking
+          </button>
+        </div>
       </div>
     </div>
   );
