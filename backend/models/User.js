@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+// import bcrypt from 'bcryptjs';  // Ab bcrypt ki zarurat nahi
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -10,17 +10,17 @@ const userSchema = new mongoose.Schema({
   role: { type: String, default: 'user' },
 });
 
-// Hash password before saving
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
-});
+// Hashing disabled — comment or remove the middleware
+// userSchema.pre('save', async function (next) {
+//   if (!this.isModified('password')) return next();
+//   const salt = await bcrypt.genSalt(10);
+//   this.password = await bcrypt.hash(this.password, salt);
+//   next();
+// });
 
-// Compare password method
+// Simple password comparison without hashing
 userSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+  return enteredPassword === this.password;
 };
 
 const User = mongoose.model('User', userSchema);
