@@ -22,12 +22,16 @@ const LoginPage = () => {
     dispatch(loginUser(formData));
   };
 
-  // Redirect to dashboard on successful login
- useEffect(() => {
-  if (userInfo) {
-    navigate("/dashboard");
-  }
-}, [userInfo, navigate]);
+  // Redirect to dashboard on successful login based on role
+  useEffect(() => {
+    if (userInfo) {
+      if (userInfo.role === "admin") {
+        navigate("/admin-dashboard");
+      } else {
+        navigate("/dashboard"); // normal user dashboard
+      }
+    }
+  }, [userInfo, navigate]);
 
   return (
     <div className="relative min-h-screen flex items-center justify-center text-black">
@@ -61,9 +65,7 @@ const LoginPage = () => {
             </Link>
           </p>
 
-          {error && (
-            <p className="text-red-400 text-center mt-4">{error}</p>
-          )}
+          {error && <p className="text-red-400 text-center mt-4">{error}</p>}
         </div>
       </div>
     </div>

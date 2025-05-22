@@ -56,6 +56,7 @@ const authSlice = createSlice({
       state.userInfo = null;
       localStorage.removeItem("userInfo");
     },
+
     resetRegisterSuccess: (state) => {
       state.registerSuccess = false;
       state.error = null;
