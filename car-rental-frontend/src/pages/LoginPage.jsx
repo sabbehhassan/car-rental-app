@@ -24,14 +24,15 @@ const LoginPage = () => {
 
   // Redirect to dashboard on successful login based on role
   useEffect(() => {
-    if (userInfo) {
-      if (userInfo.role === "admin") {
-        navigate("/admin-dashboard");
-      } else {
-        navigate("/dashboard"); // normal user dashboard
-      }
+  if (userInfo) {
+    if (userInfo.role === "admin") {
+      navigate("/admin/dashboard");  // fixed here
+    } else {
+      navigate("/dashboard");
     }
-  }, [userInfo, navigate]);
+  }
+}, [userInfo, navigate]);
+
 
   return (
     <div className="relative min-h-screen flex items-center justify-center text-black">
@@ -73,3 +74,4 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+ 

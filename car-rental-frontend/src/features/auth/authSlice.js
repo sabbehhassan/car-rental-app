@@ -1,4 +1,3 @@
-// features/auth/authSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -11,7 +10,6 @@ export const registerUser = createAsyncThunk(
         "http://localhost:5000/api/auth/register",
         userData
       );
-      // Just return message or data without userInfo
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -21,7 +19,7 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-// Login thunk
+// Login user thunk
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (userData, { rejectWithValue }) => {
@@ -30,12 +28,10 @@ export const loginUser = createAsyncThunk(
         "http://localhost:5000/api/auth/login",
         userData
       );
-      console.log("Login response:", response.data);
 
-      // Save only the user object (containing name, email, token) to localStorage
+      // Save user info to localStorage
       localStorage.setItem("userInfo", JSON.stringify(response.data.user));
 
-      // Return user object as payload
       return response.data.user;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "Login failed");
@@ -52,11 +48,12 @@ const authSlice = createSlice({
     registerSuccess: false,
   },
   reducers: {
+    // Remove user info from state and localStorage
     logout: (state) => {
       state.userInfo = null;
       localStorage.removeItem("userInfo");
     },
-
+    // Reset register success and error state
     resetRegisterSuccess: (state) => {
       state.registerSuccess = false;
       state.error = null;
@@ -64,12 +61,13 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Register user cases
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
         state.error = null;
         state.registerSuccess = false;
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
+      .addCase(registerUser.fulfilled, (state) => {
         state.loading = false;
         state.registerSuccess = true;
       })
@@ -78,12 +76,13 @@ const authSlice = createSlice({
         state.error = action.payload;
         state.registerSuccess = false;
       })
+
+      // Login user cases
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        console.log("Login fulfilled payload:", action.payload);
         state.loading = false;
         state.userInfo = action.payload;
       })
